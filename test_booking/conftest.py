@@ -29,12 +29,12 @@ def booking_data():
             "checkin": "2024-04-05",
             "checkout": "2024-04-08"
         },
-        "additionalneeds": fake.random_element(elements = ("Breakfast", "Dinner", "WiFi", "Parking","swimming pool"))
+        "additionalneeds": fake.random_element(elements = ("spoon", "table", "window", "bike",))
         }
     patch_data = {
         "firstname": fake.first_name(),
         "lastname": fake.last_name(),
-        "additionalneeds": fake.random_element(elements = ("Breakfast", "Dinner", "WiFi", "Parking","swimming pool"))
+        "additionalneeds": fake.random_element(elements = ("spoon", "table", "window", "bike"))
         }
     put_data = {
         "firstname": "FULL_UPDATE_" + fake.first_name(),
@@ -45,7 +45,7 @@ def booking_data():
             "checkin": "2024-04-15",
             "checkout": "2024-04-28"
         },
-        "additionalneeds": "FULL_UPDATE_" + fake.random_element(elements = ("Breakfast", "Dinner", "WiFi", "Parking","swimming pool"))
+        "additionalneeds": "FULL_UPDATE_" + fake.random_element(elements = ("spoon", "table", "window", "bike"))
         }
     return {
         "create" : create_data,

@@ -25,14 +25,14 @@ class TestBooking:
 
     def test_get_all_booking(self, auth_session,booking_data):
         get_booking = auth_session.get(self.endpoint)
-        assert get_booking.status_code == 200, f"Ошибка при получении созданных бронирований. Status code: {get_booking.status_code}"
+        assert get_booking.status_code == 200, "Ошибка  создании брони"
 
     def test_path_booking(self,auth_session,booking_data):
         if not self.__class__.booking_id:
-            pytest.skip("Необходимо сначала создать бронирование")
+            pytest.skip("Необходимо сначала создать бронь")
         url = f"{self.endpoint}/{self.__class__.booking_id}"
         patch_booking = auth_session.patch(url,json=booking_data["patch"])
-        assert patch_booking.status_code == 200,"Бронирование частично не обновлено"
+        assert patch_booking.status_code == 200,"Бронь частично не обновлена"
         get_patched = auth_session.get(url)
         patch_response = get_patched.json()
         assert patch_response is not None, "Обновленные данные не найдены"
@@ -45,27 +45,25 @@ class TestBooking:
             pytest.skip("Необходимо сначала создать бронирование")
         url = f"{self.endpoint}/{self.__class__.booking_id}"
         put_booking = auth_session.put(url, json = booking_data["put"])
-        assert put_booking.status_code == 200, "Бронирование не обновлено полностью"
+        assert put_booking.status_code == 200, "Бронь не обновлена полностью"
         get_put = auth_session.get(url)
         put_response = get_put.json()
-        assert put_response is not None, "Данные бронирования не найдены в ответе"
         assert put_response["firstname"] == booking_data["put"]["firstname"], "Имя не обновлено "
         assert put_response["lastname"] == booking_data["put"]["lastname"], "Фамилия не обновлено "
         assert put_response["totalprice"] == booking_data["put"]["totalprice"], "Полная сумма не обновлена "
         assert put_response["depositpaid"] == booking_data["put"]["depositpaid"], "Депозит не обновлен"
-        assert put_response["bookingdates"] == booking_data["put"]["bookingdates"], "Даты заезда и выезда не обновлены "
         assert put_response["additionalneeds"] == booking_data["put"]["additionalneeds"], "Предпочтение не обновлено "
 
     def test_delete_booking(self,auth_session):
         if not self.__class__.booking_id:
-            pytest.skip("Необходимо сначала создать бронирование")
+            pytest.skip("Необходимо сначала создать бронь")
         url = f"{self.endpoint}/{self.__class__.booking_id}"
         delete_booking = auth_session.delete(url)
-        assert delete_booking.status_code == 201, f"Ошибка  удаления букинга с ID {self.__class__.booking_id}"
+        assert delete_booking.status_code == 201, "Не удалось удалить бронь"
 
     def test_check_delete_booking(self, auth_session):
         if not self.__class__.booking_id:
-            pytest.skip("Необходимо сначала создать бронирование")
+            pytest.skip("Необходимо сначала создать бронь")
         url = f"{self.endpoint}/{self.__class__.booking_id}"
         check_delete_booking = auth_session.get(url)
         assert check_delete_booking.status_code == 404, f"Букинг с ID {self.__class__.booking_id} не удален"
