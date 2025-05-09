@@ -1,10 +1,10 @@
-from playwright.sync_api import sync_playwright
-import time
 
-from checkout_page import CheckoutPage
+from pydoc import pager
+from checkout_page import CheckOutPage
 from inventory_page import InventoryPage
 from login_page import LoginPage
-
+from checkout_page import CheckOutPage
+import time
 # playwright= sync_playwright().start()
 # browser = playwright.chromium.launch(headless=False, slow_mo=500)
 # page = browser.new_page()
@@ -54,12 +54,17 @@ from login_page import LoginPage
 
 
 
-def test_add_items_and_checkout(browser):
+def test_func(browser):
     page = browser.new_page()
-    login_page = LoginPage(page)
-    inventory_page = InventoryPage(page)
-    checkout_page = CheckoutPage(page)
+    loginPage = LoginPage(page)
+    inventoryPage = InventoryPage(page)
+    checkoutPage = CheckOutPage(page)
+    loginPage.login("problem_user", "secret_sauce")
+    inventoryPage.add_first_item_to_cart()
 
-    login_page.login('standard_user', 'secret_sauce')
-    inventory_page.add_first_item_to_cart()
-    checkout_page.fill_checkout_form("John", "Doe", '12345')
+
+def test_logout(browser):
+    page = browser.new_page()
+    loginPage = LoginPage(page)
+    loginPage.login("problem_user", "secret_sauce")
+    loginPage.logout()

@@ -6,14 +6,6 @@ from constantes import BASE_URL, AUTH_HEADERS, API_HEADERS, AUTH_DATA
 fake = Faker()
 
 
-@pytest.fixture(scope="session")
-def browser():
-    playwright= sync_playwright().start()
-    browser = playwright.chromium.launch(headless=False, slow_mo=500)
-    yield browser
-    browser.close()
-    playwright.stop()
-
 
 
 
