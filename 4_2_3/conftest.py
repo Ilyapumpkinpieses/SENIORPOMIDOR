@@ -1,0 +1,50 @@
+import pytest, requests
+from faker import Faker
+from constantes import BASE_URL, AUTH_HEADERS, API_HEADERS, AUTH_DATA
+
+
+fake = Faker()
+
+
+@pytest.fixture(scope="session")
+def browser():
+    playwright= sync_playwright().start()
+    browser = playwright.chromium.launch(headless=False, slow_mo=500)
+    yield browser
+    browser.close()
+    playwright.stop()
+
+
+
+
+@pytest.fixture(scope="session")
+def auth_session():
+    session = requests.Session()
+    session.headers.update(AUTH_HEADERS)
+
+    response = requests.post(
+        f"{BASE_URL}/login/access-token",
+        headers=AUTH_HEADERS,
+        data=AUTH_DATA,
+    )
+    assert response.status_code == 200, "Ошибка авторизации"
+
+    token = response.json().get("access_token")
+    assert token is not None, "Нет токена"
+
+    session.headers.update(API_HEADERS)
+    session.headers.update({"authorization": f"Bearer {token}"})
+    return session
+
+
+@pytest.fixture()
+def item_data():
+    return {
+        "title": fake.word().capitalize(),
+        "description": fake.sentence(nb_words=10),
+    }
+
+
+@pytest.fixture()
+def new_item_data():
+    return {"title": "New title", "description": "Task failed successfully"}
